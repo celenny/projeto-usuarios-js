@@ -2,6 +2,8 @@ class UserController {
       constructor(formId, tableId) {
           this.formEl = document.getElementById(formId); // element form
           this.tableEl = document.getElementById(formId); // element table 
+
+          this.onSubmit();
       } // constructor
 
       onSubmit() {
@@ -10,9 +12,7 @@ class UserController {
         this.formEl.addEventListener('submit', event => {
             event.preventDefault();
 
-            let user = this.getValues();
-
-            this.addLine(user);
+            this.addLine(this.getValues());
           });
       } // onSubmit
 
