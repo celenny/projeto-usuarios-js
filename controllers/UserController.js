@@ -14,30 +14,41 @@ class UserController {
 
             let values = this.getValues();
 
-            this.getPhoto((content) => {
-              values.photo = content; // conteudo do arquivo photo
-              this.addLine(values); 
-            });
-
+            this.getPhoto().then(
+                (content) => {
+                  values.photo = content; // conteudo do arquivo photo
+                  this.addLine(values); 
+              }, 
+                (e) => {
+                  console.error(e); // 
+              });
           });
       } // onSubmit
 
-      getPhoto(callback) {
-          let fileReader = new FileReader();
+      getPhoto() {
 
-          let elements = [...this.formEl.elements].filter(item => {
-              if (item.name === 'photo') {
-                  return item;
-              }
-          });
+          return new Promise((resolve, reject) => {
+              let fileReader = new FileReader();
 
-          let file = elements[0].files[0];
+              let elements = [...this.formEl.elements].filter(item => {
+                  if (item.name === 'photo') {
+                      return item;
+                  }
+              });
+    
+              let file = elements[0].files[0];
+    
+              fileReader.onload = () => {
+                  resolve(fileReader.result);
+              };
 
-          fileReader.onload = () => {
-              callback(fileReader.result);
-          };
+              fileReader.onerror = (e) =>  {
+                  reject(e);
+              };
+    
+              fileReader.readAsDataURL(file);
+            });
 
-          fileReader.readAsDataURL(file);
 
       } // getPhoto
 
@@ -80,4 +91,4 @@ class UserController {
               </tr>
             `;
       } // addLine
-}
+} // class UserController
