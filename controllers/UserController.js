@@ -131,8 +131,19 @@ class UserController {
                     let field = form.querySelector("[name="+ name.replace('_', '') +"]");
 
                     if (field) {
-                      if (field.type == 'file') continue;
-                      field.value = json[name]; 
+                        switch (field.type) {
+                            case 'file':
+                                continue;
+                            break;
+                            case 'radio':
+                                field = form.querySelector("[name="+ name.replace('_', '') +"][value=" + json[name]+"]");
+                                field.checked = true;
+                            break;
+                            case 'checkbox':
+                                field.checked = json[name];
+                            break; 
+                        }
+                        field.value = json[name];
                     }  
                 }
                 this.showPanelUpdate();
@@ -144,7 +155,7 @@ class UserController {
       } // addLine
 
       showPanelCreate() {
-        // mostrar painel de usuários
+        // mostrar painel de criar usuários
         document.querySelector('#box-user-create').style.display = "block";
         document.querySelector('#box-user-update').style.display = "none";
       }
