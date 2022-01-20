@@ -1,6 +1,7 @@
 class UserController {
-      constructor(formId, tableId) {
-          this.formEl = document.getElementById(formId); // element form
+      constructor(formIdCreate, formIdUpdate, tableId) {
+          this.formEl = document.getElementById(formIdCreate); // element form
+          this.formUpdateEl = document.getElementById(formIdUpdate); // element form Update
           this.tableEl = document.getElementById(tableId); // element table 
 
           this.onSubmit();
@@ -11,6 +12,18 @@ class UserController {
           document.querySelector('#box-user-update .btn-cancel').addEventListener('click', e => {
                 this.showPanelCreate();
           });
+
+          this.formUpdateEl.addEventListener('submit', event => {
+
+                event.preventDefault();
+
+                let btn = this.formUpdateEl.querySelector('[type=submit]');
+
+                btn.disabled = true;
+
+                let values = this.getValues(this.formUpdateEl);
+                console.log(values)
+          })
       } // onEdit
 
       onSubmit() {
@@ -24,7 +37,7 @@ class UserController {
 
             btn.disabled = true; // desabilitar o botão
 
-            let values = this.getValues();
+            let values = this.getValues(this.formEl);
 
             if (!values) return false;
 
@@ -72,11 +85,11 @@ class UserController {
 
       } // getPhoto
 
-      getValues() {
+      getValues(formEl) {
         let user = {};
         let isValid = true;
 
-        [...this.formEl.elements].forEach(function(field){
+        [...formEl.elements].forEach(function(field){
 
             if (['name', 'email', 'password'].indexOf(field.name) > -1 && !field.name) {
                 field.parentElement.classList.add('has-error');
@@ -127,6 +140,8 @@ class UserController {
                 let json = JSON.parse(tr.dataset.user);
                 let form = document.querySelector('#form-user-update');
 
+                form.dataset.trIndex = tr.sectionRowIndex; // amarazenar o indice do usuário
+
                 for (let name in json) {
                     let field = form.querySelector("[name="+ name.replace('_', '') +"]");
 
@@ -136,7 +151,8 @@ class UserController {
                                 continue;
                             break;
                             case 'radio':
-                                field = form.querySelector("[name="+ name.replace('_', '') +"][value=" + json[name]+"]");
+                                this.field = form.querySelector("[name="+ name.replace('_', '') +"][value=" + json[name]+"]");
+                                //print(field.checked);
                                 field.checked = true;
                             break;
                             case 'checkbox':
