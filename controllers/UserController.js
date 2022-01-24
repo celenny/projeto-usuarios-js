@@ -6,6 +6,7 @@ class UserController {
 
           this.onSubmit();
           this.onEdit();
+          this.selectAll();
       } // constructor
 
       onEdit() {
@@ -88,6 +89,7 @@ class UserController {
             this.getPhoto(this.formEl).then(
                 (content) => {
                   values.photo = content; // conteudo do arquivo photo
+                  this.insert(values);
                   this.addLine(values);
                   this.formEl.reset(); // resetar o formulário 
                   btn.disabled = false;
@@ -163,9 +165,39 @@ class UserController {
 
       } // getValues
 
+      getUsersStorage() {
+        let users = [];
+
+        if (sessionStorage.getItem('users')) {
+            users = JSON.parse(sessionStorage.getItem('users'));
+        }
+
+        return users;
+      } // getUsersStorage
+
+      selectAll() {
+          let users = this.getUsersStorage(); 
+
+          users.forEach(dataUser=> {
+              let user = new User();
+              user.loadFromJSON(dataUser);
+              this.addLine(user);
+          });
+
+      } // selectAll
+
+      insert(data) {
+          let users = this.getUsersStorage(); 
+
+          users.push(data);
+
+          sessionStorage.setItem('users', JSON.stringify(users));
+      } // insert
+
       addLine(dataUser) {
           
           let tr = document.createElement('tr');
+
           tr.dataset.user = JSON.stringify(dataUser);
 
           tr.innerHTML = `
