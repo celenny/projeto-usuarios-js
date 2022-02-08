@@ -53,10 +53,10 @@ class User {
 
     loadFromJSON(json) {
         for (let name in json) {
-            switch(name) {
+            switch (name) {
                 case '_register':
                     this[name] = new Date(json[name]);
-                break;
+                    break;
                 default:
                     this[name] = json[name];
             }
