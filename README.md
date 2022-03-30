@@ -10,6 +10,8 @@ Desenvolvido como exemplo do Curso Completo de JavaScript da Hcode Treinamentos
 
 ## Tecnologias:
 - JavaScript  <img align="center" height="25" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"> 
+- HTML <img align="center" height="25" src="https://cdn-icons-png.flaticon.com/512/732/732212.png">
+- CSS <img align="center" height="25" src="https://cdn4.iconfinder.com/data/icons/iconsimple-programming/512/css-512.png">
 
 ## Feito por:
 <table>
